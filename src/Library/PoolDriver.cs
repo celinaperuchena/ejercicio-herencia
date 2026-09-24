@@ -10,8 +10,9 @@ namespace Ucu.Poo.RideShare
             double rating,
             string bio,
             string vehicle,
-            int maxCapacity)
-            : base(name, lastName, id, photo, rating, bio, vehicle)
+            int maxCapacity,
+            bool needsGlasses)
+            : base(name, lastName, id, photo, rating, bio, vehicle, needsGlasses)
         {
             this.MaxCapacity = maxCapacity;
         }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Ucu.Poo.Cognitive;
 using Ucu.Poo.Discord;
 
 namespace Ucu.Poo.RideShare
@@ -9,6 +10,7 @@ namespace Ucu.Poo.RideShare
         private List<Passenger> passengers = new List<Passenger>();
         private DiscordClient discord;
         private ulong channelId;
+        private CognitiveFace face = new CognitiveFace();
 
         public UcuRideShare(DiscordClient discord, ulong channelId)
         {
@@ -18,6 +20,19 @@ namespace Ucu.Poo.RideShare
 
         public void Add(Driver driver)
         {
+            CognitiveFace.RecognitionResult result =
+                this.face.Recognize(driver.Photo);
+
+            if (!result.Success)
+            {
+                return;
+            }
+
+            if (driver.NeedsGlasses && !result.GlassesFound)
+            {
+                return;
+            }
+
             this.drivers.Add(driver);
 
             this.discord.SendMessage(
@@ -32,6 +47,14 @@ namespace Ucu.Poo.RideShare
 
         public void Add(Passenger passenger)
         {
+            CognitiveFace.RecognitionResult result =
+                this.face.Recognize(passenger.Photo);
+
+            if (!result.Success || !result.FaceFound)
+            {
+                return;
+            }
+
             this.passengers.Add(passenger);
 
             this.discord.SendImage(

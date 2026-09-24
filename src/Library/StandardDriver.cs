@@ -9,8 +9,9 @@ namespace Ucu.Poo.RideShare
             string photo,
             double rating,
             string bio,
-            string vehicle)
-            : base(name, lastName, id, photo, rating, bio, vehicle)
+            string vehicle,
+            bool needsGlasses)
+            : base(name, lastName, id, photo, rating, bio, vehicle, needsGlasses)
         {
         }
     }

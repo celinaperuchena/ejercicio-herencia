@@ -9,12 +9,14 @@ namespace Ucu.Poo.RideShare
             string photo,
             double rating,
             string bio,
-            string vehicle)
+            string vehicle,
+            bool needsGlasses)
             : base(name, lastName, id, photo)
         {
             this.Rating = rating;
             this.Bio = bio;
             this.Vehicle = vehicle;
+            this.NeedsGlasses = needsGlasses;
         }
 
         public double Rating { get; set; }
@@ -22,6 +24,8 @@ namespace Ucu.Poo.RideShare
         public string Bio { get; set; }
 
         public string Vehicle { get; set; }
+
+        public bool NeedsGlasses { get; set; }
 
         public override string Welcome()
         {

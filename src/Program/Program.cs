@@ -44,7 +44,8 @@ namespace Ucu.Poo.RideShare
                 "bill.jpg",
                 5.0,
                 "Soy conductor de UCURide.",
-                "Toyota");
+                "Toyota",
+                false);
 
             Driver conductorPool1 = new PoolDriver(
                 "Pedro",
@@ -54,7 +55,8 @@ namespace Ucu.Poo.RideShare
                 4.8,
                 "Tengo lugar para varios pasajeros.",
                 "Chevrolet",
-                4);
+                4,
+                false);
 
             Passenger pasajero1 = new Passenger(
                 "Ana",
