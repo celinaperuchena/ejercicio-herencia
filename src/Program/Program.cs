@@ -6,7 +6,6 @@
 
 using System;
 using Ucu.Poo.Discord;
-using Ucu.Poo.Cognitive;
 
 namespace Ucu.Poo.RideShare
 {
@@ -16,15 +15,16 @@ namespace Ucu.Poo.RideShare
     public static class Program
     {
         /// <summary>
-        /// Punto de entrada al programa principal.
+        /// Punto de entrada al programa.
         /// </summary>
         public static void Main()
         {
             string botToken = Environment.GetEnvironmentVariable("DISCORD_BOT_TOKEN");
             string channelText = Environment.GetEnvironmentVariable("CHANNEL_ID");
+
             if (string.IsNullOrWhiteSpace(botToken) || string.IsNullOrWhiteSpace(channelText))
             {
-                Console.WriteLine("Faltan las variables de entorno 'DISCORD_BOT_TOKEN' y 'CHANNEL_ID'.");
+                Console.WriteLine("Faltan las variables de entorno de Discord.");
                 return;
             }
 
@@ -32,71 +32,42 @@ namespace Ucu.Poo.RideShare
 
             DiscordClient discord = new DiscordClient();
 
-            /*
-            Mira a continuación cómo enviar mensajes y archivos a Discord;
-            deberás hacer lo mismo en las clases y métodos adecuados de tu
-            solución. Luego puedes comentar o eliminar este código.
-            */
-
             Console.WriteLine("Conectando con Discord...");
             discord.Login(botToken);
-            discord.SendMessage(channelId, "¡Hola desde C#!");
-            discord.SendImage(channelId, "bill.jpg", "Mira esta imagen");
-            Console.WriteLine("Mensajes enviados.");
 
-            /*
-            Mira a continuación cómo validar caras y caras con lentes para el
-            desafío 3; deberás hacer lo mismo en las clases y métodos adecuados
-            de tu solución. Luego puedes comentar o eliminar este código.
-            */
+            UcuRideShare rideShare = new UcuRideShare(discord, channelId);
 
-            string subscriptionKey = Environment.GetEnvironmentVariable("AZURE_FACE_SUBSCRIPTION_KEY");
-            if (string.IsNullOrWhiteSpace(subscriptionKey))
-            {
-                Console.WriteLine("Falta la variables de entorno 'AZURE_FACE_SUBSCRIPTION_KEY'.");
-                return;
-            }
+            Driver conductor1 = new StandardDriver(
+                "Juan",
+                "Pérez",
+                "12345678",
+                "bill.jpg",
+                5.0,
+                "Soy conductor de UCURide.",
+                "Toyota");
 
-            CognitiveFace face = new CognitiveFace();
-            CognitiveFace.RecognitionResult result = face.Recognize("bill.jpg");
-            if (result.Success && result.FaceFound)
-            {
-                Console.WriteLine("Hay una cara 😀");
-            }
-            result = face.Recognize("rick.jpg");
-            if (result.Success && result.GlassesFound)
-            {
-                Console.WriteLine("Hay una cara con lentes 🤓");
-            }
+            Driver conductorPool1 = new PoolDriver(
+                "Pedro",
+                "Rodríguez",
+                "45678912",
+                "rick.jpg",
+                4.8,
+                "Tengo lugar para varios pasajeros.",
+                "Chevrolet",
+                4);
 
-            /*
-            En este método deberás mostrar un ejemplo de funcionamiento de tu
-            solución. A continuación te planteamos un ejemplo de como hacerlo.
-            Esto no significa que te limites a hacer solamente esto, ¡debes
-            pensar en grande!
+            Passenger pasajero1 = new Passenger(
+                "Ana",
+                "Gómez",
+                "87654321",
+                "dan.jpg",
+                4.5);
 
-            User pasajero1 = ...
-            User pasajero2 = ...
-            User pasajero3 = ...
-            User conductor1 = ...
-            User conductorPool1 = ...
-            UcuRideShare rideShare = new UcuRideShare()
+            rideShare.Add(conductor1);
+            rideShare.Add(conductorPool1);
+            rideShare.Add(pasajero1);
 
-            rideShare.Add(conductor1)
-            Se publica en Discord un nuevo conductor!
-
-            rideShare.Add(conductorPool1)
-            Se publica en Discord un nuevo conductor!
-
-            rideShare.Add(pasajero1)
-            Se publica en Discord nuevo registro de pasajero!
-
-            rideShare.Add(pasajero2)
-            Se publica en Discord nuevo registro de pasajero!
-
-            rideShare.Add(pasajero3)
-            Se publica en Discord nuevo registro de pasajero!
-            */
+            Console.WriteLine("Usuarios agregados.");
         }
     }
 }
